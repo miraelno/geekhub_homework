@@ -3,7 +3,7 @@
 number_from_user = int(input().strip())
 result = 0
 
-for i in range(1, number_from_user + 1, 1):
+for i in range(1, number_from_user + 1):
     result += i
 
 print(result)

@@ -3,7 +3,7 @@
 counter = int(input().strip())
 result_string = ''
 
-for i in range(counter):
+for _ in range(counter):
     result_string += input()
 
 print(result_string)

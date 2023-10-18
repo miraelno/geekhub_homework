@@ -5,4 +5,4 @@
 value_to_compare = [1, 2, 'u', 'a', 4, True]
 value_from_user = input()
 
-print(value_from_user in str(value_to_compare))
+print(value_from_user in map(str, value_to_compare))
