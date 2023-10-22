@@ -4,9 +4,9 @@
 start = int(input())
 end = int(input())
 
-for _ in range(start, end + 1):
-    if _ % 4 == 0:
-        if _ % 400 == 0:
-            print(_)
-        elif _ % 100 > 0:
-            print(_)
+for i in range(start, end + 1):
+    if i % 4 == 0:
+        if i % 400 == 0:
+            print(i)
+        elif i % 100 > 0:
+            print(i)

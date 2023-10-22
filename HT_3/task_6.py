@@ -2,5 +2,5 @@
 
 test_dict = {'middle1': 11, 'max': 20, 'min': 1, 'middle2': 15}
 
-print(F"The max value is: {max(test_dict.values())}")
-print(F"The min value is: {min(test_dict.values())}")
+print(f"The max value is: {max(test_dict.values())}")
+print(f"The min value is: {min(test_dict.values())}")

@@ -7,9 +7,11 @@ tuple_3 = ('test', [1, 2, 3], True, 'hello', [True, False])
 list_of_tuples = [tuple_1, tuple_2, tuple_3]
 value_from_user = input()
 
-for _ in list_of_tuples:
-    _ = list(_)
-    print(f"Last value before change {_[len(_)-1]}")
-    _[len(_)-1] = value_from_user
-    print(f"Last value after change {_[len(_)-1]}")
-    _ = tuple(_)
+for i in list_of_tuples:
+    i = list(i)
+    print(f"Last value before change {i[-1]}")
+    i[-1] = value_from_user
+    print(f"Last value after change {i[-1]}")
+    i = tuple(i)
+
+print(tuple_1)

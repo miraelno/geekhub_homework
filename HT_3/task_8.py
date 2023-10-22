@@ -2,6 +2,6 @@
 
 value_from_user = int(input().strip())
 
-for _ in range(value_from_user):
-    if _ % 17 == 0:
-        print(_)
+for i in range(value_from_user + 1):
+    if i % 17 == 0:
+        print(i)

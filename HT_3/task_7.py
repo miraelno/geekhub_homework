@@ -4,8 +4,7 @@
 dict_size = int(input().strip())
 result_dict = {}
 
-for _ in range(dict_size):
-    value_from_user = int(input().strip())
-    result_dict[value_from_user] = value_from_user * value_from_user
+for i in range(dict_size + 1):
+    result_dict[i] = i * i
 
 print(result_dict)
