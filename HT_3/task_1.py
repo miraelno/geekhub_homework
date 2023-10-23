@@ -3,15 +3,17 @@
 tuple_1 = (1, 2, 3)
 tuple_2 = ('1', '2', '3', '4')
 tuple_3 = ('test', [1, 2, 3], True, 'hello', [True, False])
+tuple_4 = ()
 
-list_of_tuples = [tuple_1, tuple_2, tuple_3]
+list_of_tuples = [tuple_1, tuple_2, tuple_3, tuple_4]
 value_from_user = input()
 
+print(list_of_tuples)
 for index, value in enumerate(list_of_tuples):
+    if not value:
+        continue
     new_tuple = list(value)
-    print(f"Last value before change {new_tuple[-1]}")
     new_tuple[-1] = value_from_user
-    print(f"Last value after change {new_tuple[-1]}")
     value = tuple(new_tuple)
     list_of_tuples[index] = value
 
