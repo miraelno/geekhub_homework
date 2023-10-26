@@ -13,12 +13,11 @@ class InvalidAgeError(Exception):
 
 
 def check_the_age():
-    age = int(input())
+    age = int(input('Enter user\'s age: '))
     try:
-        if age < 18 or age > 120:
+        if not 18 > age > 120: # or age < 18 or age > 120
             raise InvalidAgeError(age)
     except InvalidAgeError as e:
         print(e)
     
-
 check_the_age()

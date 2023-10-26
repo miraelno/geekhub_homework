@@ -21,4 +21,4 @@ def negative_value_check(number):
         print(f"Error: {e}")
 
 
-negative_value_check(int(input()))
+negative_value_check(int(input('Enter a number: ')))
