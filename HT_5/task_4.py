@@ -52,4 +52,4 @@ def find_num_and_symb(user_input):
 
     return (letters, numbers)
 
-process_the_string("f98ne roi4nr0jfkldsjfljsdifjdslj jisdjfisjdsjidjisjifjilsdjfdsdifs")
+process_the_string("f98ne roi4nr0jfkldsjf")

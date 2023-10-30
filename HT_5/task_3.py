@@ -3,6 +3,8 @@
 #     x > y;       вiдповiдь - "х бiльше нiж у на z"
 #     x < y;       вiдповiдь - "у бiльше нiж х на z"
 #     x == y.      вiдповiдь - "х дорiвнює z"
+from exceptions import NotANumberException
+from utils import convert_number
 
 def check_equality(x, y):
     if x > y:
@@ -14,9 +16,9 @@ def check_equality(x, y):
 
 
 try:
-    x = int(input())
-    y = int(input())
-except Exception as e:
+    x = convert_number(input('Enter first number: '))
+    y = convert_number(input('Enter second number: '))
+except NotANumberException as e:
     print(e)
-
-check_equality(x, y)
+else:
+    check_equality(x, y)
