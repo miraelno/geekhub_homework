@@ -17,24 +17,27 @@ def calculator(user_input):
         second_operant = convert_number(second_operant)
     except NotANumberException as e:
         return e
-
-    match operator:
-        case '+':
-            return first_operant + second_operant
-        case '-':
-            return first_operant - second_operant
-        case '*':
-            return first_operant * second_operant
-        case '/':
-            return first_operant / second_operant
-        case '%':
-            return first_operant % second_operant
-        case '//':
-            return first_operant // second_operant
-        case '**':
-            return first_operant ** second_operant
-        case _:
-            print('Invalid operator')
+    
+    try:
+        match operator:
+            case '+':
+                return first_operant + second_operant
+            case '-':
+                return first_operant - second_operant
+            case '*':
+                return first_operant * second_operant
+            case '/':
+                return first_operant / second_operant
+            case '%':
+                return first_operant % second_operant
+            case '//':
+                return first_operant // second_operant
+            case '**':
+                return first_operant ** second_operant
+            case _:
+                print('Invalid operator')
+    except ZeroDivisionError:
+        print('You can\'t divine by zero')
 
 
 result = calculator(input('Enter a formula in this format x + y:  '))
