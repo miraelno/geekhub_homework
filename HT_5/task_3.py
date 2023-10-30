@@ -4,18 +4,19 @@
 #     x < y;       вiдповiдь - "у бiльше нiж х на z"
 #     x == y.      вiдповiдь - "х дорiвнює z"
 
-def check_equality():
-    try:
-        x = int(input())
-        y = int(input())
-    except Exception as e:
-        return e
-
+def check_equality(x, y):
     if x > y:
         print(f'{x} greater than {y} by {x - y}')
     elif x < y:
-        print(f'{x} less than {y} by {y - x}')
+        print(f'{y} greater than {x} by {y - x}')
     elif x == y:
         print(f'{x} is equal to {y}')
 
-check_equality()
+
+try:
+    x = int(input())
+    y = int(input())
+except Exception as e:
+    print(e)
+
+check_equality(x, y)

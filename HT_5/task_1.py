@@ -2,9 +2,7 @@
 # У випадку некоректного введеного значення - виводити відповідне повідомлення.
 
 def season(month):
-    if month < 1 or month > 12:
-        return "There is no such month"
-    elif month in [12, 1, 2]:
+    if month in [12, 1, 2]:
         return "Winter"
     elif month in [3, 4, 5]:
         return "Spring"
@@ -13,7 +11,7 @@ def season(month):
     elif month in [9, 10, 11]:
         return "Autumn"
     else:
-        print("Invalid input")
+        print("There is no such month")
 
 month = int(input("Enter the number: "))
 result = season(month)
