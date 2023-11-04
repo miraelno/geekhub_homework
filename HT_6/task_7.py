@@ -9,16 +9,15 @@ def count_same_elements(input_list: list):
         counter = 1
         value = input_list.pop(0)
         for j in input_list:
-            if isinstance(value, (dict, set, list, tuple)):
-                if value == j:
+            if isinstance(value, (bool, int)):
+                if value is j:
                     input_list.remove(j)
                     counter += 1
             else:
-                if value is j:
+                if value == j:
                     input_list.remove(j)
                     counter += 1
         print(f'{value} -> {counter}')
 
 
-
-print(count_same_elements([1, 1, 'foo', (1, 2), [1, 2], 'foo', 1, [1, 2], 'True', True, {1, 2}, (1, 2)]))
+print(count_same_elements([1, 1, 'foo', (1, 2),{'key': 'val'}, [1, 2], 'foo', 1, [1, 2], 'True', True, {1, 2}, (1, 2), {1, 2},{'key': 'val'}]))
