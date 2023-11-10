@@ -1,6 +1,6 @@
 # 2. Запишіть в один рядок генератор списку (числа в діапазоні від 0 до 100), сума цифр кожного елемент якого буде дорівнювати 10.
 #    Результат: [19, 28, 37, 46, 55, 64, 73, 82, 91]
 
-list_generator = [i for i in range(101) if [k for k in list(str(i)) if sum(map(int, str(i))) == 10]]
+list_generator = [i for i in range(101) if sum(map(int, str(i))) == 10]
 
 print(list_generator)

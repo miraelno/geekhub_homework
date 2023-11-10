@@ -11,10 +11,10 @@
 #     "ABBA" -> 2             # 'A' і 'B' кожна двічі
 
 
-def count_letters(string):
-    string = string.lower()
+def count_letters(input_string):
+    input_string = input_string.lower()
     
-    result = len({i for i in string if string.count(i) >= 2})
+    result = len({i for i in input_string if input_string.count(i) >= 2})
     return result
 
 
