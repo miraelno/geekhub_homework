@@ -27,15 +27,14 @@ def my_range(start, stop=None, step=1):
             start += step
 
 
-for i in my_range(1, -11, -1):
-    print(i)
+# for i in my_range(1, -11, -1):
+#     print(i)
 
-
-print(list(range(10)) == list(my_range(10)))
-print(list(range(1, 11)) == list(my_range(1, 11)))
-print(list(range(0, 30, 5)) == list(my_range(0, 30, 5)))
-print(list(range(0, 10, 3)) == list(my_range(0, 10, 3)))
-print(list(range(0, -10, -1)) == list(my_range(0, -10, -1)))
-print(list(range(0)) == list(my_range(0)))
-print(list(range(1, 0)) == list(my_range(1, 0)))
-print(list(range(1, -10, 5)) == list(my_range(1, -10, 5)))
+assert list(range(10)) == list(my_range(10))
+assert list(range(1, 11)) == list(my_range(1, 11))
+assert list(range(0, 30, 5)) == list(my_range(0, 30, 5))
+assert list(range(0, 10, 3)) == list(my_range(0, 10, 3))
+assert list(range(0, -10, -1)) == list(my_range(0, -10, -1))
+assert list(range(0)) == list(my_range(0))
+assert list(range(1, 0)) == list(my_range(1, 0))
+assert list(range(1, -10, 5)) == list(my_range(1, -10, 5))
