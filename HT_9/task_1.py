@@ -16,3 +16,27 @@
 #       Yellow     Red
 #       Yellow     Red
 #       Red        Green
+import time
+
+
+
+def is_red(color):
+    if color == 'Red':
+        return True
+    
+
+while True:
+    car = 'Red'
+
+    for i in range(12):
+        if i == 4:
+            car = 'Yellow'
+        elif i == 6:
+            car = 'Green'
+        elif i == 10:
+            car = 'Yellow'
+            
+        pedestrian = 'Green' if is_red(car) else 'Red'
+
+        print(f'{car} {pedestrian}')
+        time.sleep(1)
