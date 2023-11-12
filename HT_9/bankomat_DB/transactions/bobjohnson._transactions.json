@@ -1,0 +1,14 @@
+{
+  "transactions": [
+    {
+      "date": "2023-11-13T09:00:00",
+      "amount": 35.80,
+      "description": "Gas station"
+    },
+    {
+      "date": "2023-11-14T17:30:00",
+      "amount": 20.50,
+      "description": "Dinner at a restaurant"
+    }
+  ]
+}

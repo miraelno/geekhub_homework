@@ -1,0 +1,14 @@
+{
+  "transactions": [
+    {
+      "date": "2023-11-10T08:15:00",
+      "amount": 50.20,
+      "description": "Grocery shopping"
+    },
+    {
+      "date": "2023-11-12T12:00:00",
+      "amount": 30.00,
+      "description": "Lunch with friends"
+    }
+  ]
+}

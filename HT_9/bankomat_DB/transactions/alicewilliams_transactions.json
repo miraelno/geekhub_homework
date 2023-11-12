@@ -1,0 +1,14 @@
+{
+  "transactions": [
+    {
+      "date": "2023-11-15T11:45:00",
+      "amount": 40.00,
+      "description": "Movie tickets"
+    },
+    {
+      "date": "2023-11-16T13:20:00",
+      "amount": 18.75,
+      "description": "Snacks at the cinema"
+    }
+  ]
+}
