@@ -25,11 +25,3 @@ class NotEnoughMoneyException(Exception):
     def __str__(self):
         return 'Not enough money for this operation.'
 
-
-class NoSuchUserException(Exception):
-
-    def __init__(self):
-        super().__init__(self)
-
-    def __str__(self):
-        return 'There is no such user in system.'

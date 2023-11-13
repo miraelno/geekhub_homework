@@ -5,36 +5,29 @@
 #  Не забудьте додати перевірку чи файл існує.
 
 from exceptions import NotEnoughSymbolsException
+from math import ceil
 
 
-def print_symbols(file_path=None, size_to_print=None):
+def print_symbols(file_path, size_to_print):
     try:
-        file_size = validate_size(file_path, size_to_print)
+        with open(file_path, 'r') as f:
+            file_data = f.read()
     except FileNotFoundError:
         print('No such file or wrong path.')
-        return 
-    
-    blocks_size = file_size // 3
+        return
+
+    file_data_len = len(file_data)
+    if file_data_len < size_to_print:
+        raise NotEnoughSymbolsException
+    if (file_data_len - size_to_print) % 2 != 0:
+        raise NotEnoughSymbolsException
+
+    center = ceil(file_data_len / 2) - ceil(size_to_print / 2)
+    print([
+        file_data[:size_to_print],
+        file_data[center:center + size_to_print],
+        file_data[-size_to_print:]
+    ])
 
 
-    with open(file_path, 'r') as f:
-
-        for block in range(1, 4):
-            f_to_print = f.read(blocks_size)
-            print(f'{"-"*8}Symbols from {block} block{"-"*8}')
-            print(f_to_print[:size_to_print])
-
-
-
-def validate_size(file_path, size_to_print):
-
-    with open(file_path, 'r') as f:
-        f_content = f.read()
-
-        file_number_of_symbols = len(f_content)
-
-        if file_number_of_symbols < size_to_print or file_number_of_symbols < (size_to_print * 3):
-            raise NotEnoughSymbolsException
-    return file_number_of_symbols
-
-print_symbols('test_file.txt', 100)
+print_symbols('test_file.txt', 2)

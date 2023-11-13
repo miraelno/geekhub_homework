@@ -20,15 +20,17 @@
 #     P.S. Увага! Файли мають бути саме вказаних форматів (csv, txt, json відповідно)
 #     P.S.S. Добре продумайте структуру програми та функцій
 import csv
-import json
 import datetime
+import json
 import time
 
-from utils import *
-from exceptions import *
+from exceptions import InvalidUsernameOrPasswordException, NotEnoughMoneyException
+
+from enums import FileTypes
+from utils import find_file, take_value
 
 
-def login(name=None, password=None):
+def login(name, password):
     users_file = find_file(FileTypes.USER)
 
     with open(users_file, 'r') as csv_file:
@@ -38,7 +40,7 @@ def login(name=None, password=None):
 
         for line in csv_reader:
             if line[0].lower() == name.lower() and line[1] == password:
-                print(f'Welkome to the system!')
+                print(f'Welcome to the system!')
                 return name
             else:
                 raise InvalidUsernameOrPasswordException
@@ -52,16 +54,12 @@ def getBalance(user_name: str):
         return float(user_balance)
 
 
-# getBalance('jo')
-
 def updateBalance(user_name: str, new_value: float):
     balance_file = find_file(FileTypes.BALANCE, user_name)
 
     with open(balance_file, 'w') as f:
         f.write(str(new_value))
 
-
-# updateBalance('jo', 21.5)
 
 def addTransaction(user_name: str, transaction_data: dict):
     transactions_file = find_file(FileTypes.TRANSACTION, user_name)
@@ -72,14 +70,6 @@ def addTransaction(user_name: str, transaction_data: dict):
         f.seek(0)
         json.dump(data, f, indent=2)
 
-
-# transaction_data = {
-#     "date": str(datetime.datetime.now()),
-#     "amount": 1.50,
-#     "description": "Test transaction"
-# }
-
-# addTransaction('jo', transaction_data)
 
 def withdraw_cash(user_name: str, amount: float):
     amount = float(amount)
@@ -96,10 +86,6 @@ def withdraw_cash(user_name: str, amount: float):
 
     updateBalance(user_name, balance - amount)
     addTransaction(user_name, transaction_data)
-
-
-# withdraw_cash('jo', 1)
-# print(getBalance('jo'))
 
 
 def start():
@@ -142,7 +128,7 @@ def start():
                             break
                         else:
                             print('Not enough money. Try again.')
-                    
+
                     updateBalance(input_name, current_balance - value)
                     print('The operation is successful!')
 

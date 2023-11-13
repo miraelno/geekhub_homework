@@ -29,6 +29,16 @@
       "date": "2023-11-12 22:27:12.433319",
       "amount": 10.0,
       "description": "Withdrawing cash from an ATM"
+    },
+    {
+      "date": "2023-11-13 13:12:30.109384",
+      "amount": 20.0,
+      "description": "Replenishment at an ATM"
+    },
+    {
+      "date": "2023-11-13 13:12:36.931191",
+      "amount": 20.0,
+      "description": "Withdrawing cash from an ATM"
     }
   ]
 }

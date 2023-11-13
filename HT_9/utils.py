@@ -1,10 +1,7 @@
 import os
-from enum import Enum
+from enums import FileTypes
 
-class FileTypes(Enum):
-    BALANCE = 'balances'
-    TRANSACTION = 'transactions'
-    USER = 'users.csv'
+
 
 
 def find_file(file_type: FileTypes, username=None):
