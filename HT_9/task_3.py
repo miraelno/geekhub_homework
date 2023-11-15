@@ -46,7 +46,7 @@ def login(name, password):
                 raise InvalidUsernameOrPasswordException
 
 
-def getBalance(user_name: str):
+def get_balance(user_name: str):
     balance_file = find_file(FileTypes.BALANCE, user_name)
 
     with open(balance_file, 'r') as f:
@@ -54,16 +54,16 @@ def getBalance(user_name: str):
         return float(user_balance)
 
 
-def updateBalance(user_name: str, new_value: float):
+def update_balance(user_name: str, new_value: float):
     balance_file = find_file(FileTypes.BALANCE, user_name)
 
     with open(balance_file, 'w') as f:
         f.write(str(new_value))
 
 
-def addTransaction(user_name: str, transaction_data: dict):
+def add_transaction(user_name: str, transaction_data: dict):
     transactions_file = find_file(FileTypes.TRANSACTION, user_name)
-
+    
     with open(transactions_file, 'r+') as f:
         data = json.load(f)
         data['transactions'].append(transaction_data)
@@ -73,7 +73,7 @@ def addTransaction(user_name: str, transaction_data: dict):
 
 def withdraw_cash(user_name: str, amount: float):
     amount = float(amount)
-    balance = getBalance(user_name)
+    balance = get_balance(user_name)
 
     if balance < amount:
         raise NotEnoughMoneyException
@@ -84,8 +84,8 @@ def withdraw_cash(user_name: str, amount: float):
         "description": "Withdraw cash"
     }
 
-    updateBalance(user_name, balance - amount)
-    addTransaction(user_name, transaction_data)
+    update_balance(user_name, balance - amount)
+    add_transaction(user_name, transaction_data)
 
 
 def start():
@@ -105,14 +105,18 @@ def start():
             print('4 - Exit')
 
             user_input = input('Select the operation by number: ').strip()
-            current_balance = getBalance(input_name)
+            current_balance = get_balance(input_name)
 
             match user_input:
                 case '1':
                     print(current_balance)
                 case '2':
                     value = take_value()
-                    updateBalance(input_name, value + current_balance)
+                    if value <= 0:
+                        print('Negative value!')
+                        continue
+                        
+                    update_balance(input_name, value + current_balance)
                     print('The operation is successful!')
 
                     transaction_data = {
@@ -120,7 +124,7 @@ def start():
                         "amount": value,
                         "description": "Replenishment at an ATM"
                     }
-                    addTransaction(input_name, transaction_data)
+                    add_transaction(input_name, transaction_data)
                 case '3':
                     while True:
                         value = take_value()
@@ -129,7 +133,7 @@ def start():
                         else:
                             print('Not enough money. Try again.')
 
-                    updateBalance(input_name, current_balance - value)
+                    update_balance(input_name, current_balance - value)
                     print('The operation is successful!')
 
                     transaction_data = {
@@ -137,7 +141,7 @@ def start():
                         "amount": value,
                         "description": "Withdrawing cash from an ATM"
                     }
-                    addTransaction(input_name, transaction_data)
+                    add_transaction(input_name, transaction_data)
                 case '4':
                     print('Thank you for using our system!')
                     return

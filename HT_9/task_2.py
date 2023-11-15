@@ -30,4 +30,4 @@ def print_symbols(file_path, size_to_print):
     ])
 
 
-print_symbols('test_file.txt', 2)
+print_symbols('test_file.txt', 3)
