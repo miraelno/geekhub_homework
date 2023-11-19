@@ -1,31 +1,37 @@
-import os
-from enums import FileTypes
+import sqlite3
+import re
 
-from pathlib import Path
-
-
-def find_file(file_type: FileTypes, username=None):
-    if file_type is FileTypes.USER:
-        return "bankomat_DB/users.csv"
-
-    if username is None:
-        return "For finding balance or transactions files you should add a username."
-
-    list_of_files = os.listdir(f"bankomat_DB/{file_type.value}")
-    for_user = [i for i in list_of_files if i.startswith(username.lower().strip())]
-    if len(for_user) > 1:
-        return "More than 1 files are found. Please, specify the user name."
-    elif len(for_user) == 0:
-        return "No data is found"
-    else:
-        return f"bankomat_DB/{file_type.value}/{for_user[0]}"
+from exceptions import WrongValidationException
 
 
 def take_value():
-    while True:
-        try:
-            user_input = input("Enter a value: ")
-            user_input = float(user_input)
-            return user_input
-        except ValueError:
-            print("Please, enter a valid number!")
+    try:
+        user_input = input("Enter a value: ")
+        user_input = float(user_input)
+        return user_input
+    except ValueError:
+        print("Please, enter a valid number!")
+
+def get_connection():
+    return sqlite3.connect("ATM_DB.db")
+
+def validate_credentials(name, password):
+
+    name_validators = [
+    (r"\w{3,50}", "Invalid name length"),
+    ]
+
+    password_validators = [
+    (r"\w{8,}", "Invalid password length"),
+    (r"\w*\d+\w*", "Must contain at least 1 digit"),
+    ]
+
+    for validation_regex, invalid_message in name_validators:
+        if not re.match(validation_regex, name):
+            raise WrongValidationException(invalid_message)
+
+    for validation_regex, invalid_message in password_validators:
+        if not re.match(validation_regex, password):
+            raise WrongValidationException(invalid_message)
+
+    return True
