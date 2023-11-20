@@ -10,10 +10,10 @@ class NotEnoughMoneyException(Exception):
 
 class InvalidAddingAmountException(Exception):
     def __str__(self):
-        return "You can't add negative amount."
+        return "You can't put less that minimal nominal."
+
 
 class WrongValidationException(Exception):
-
     def __init__(self, message):
         super().__init__(self)
         self.message = message
