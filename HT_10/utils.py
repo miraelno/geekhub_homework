@@ -16,7 +16,7 @@ def get_connection():
     return sqlite3.connect("ATM_DB.db")
 
 def validate_credentials(name, password):
-
+    
     name_validators = [
     (r"\w{3,50}", "Invalid name length"),
     ]

@@ -10,10 +10,12 @@
 import datetime
 import time
 
+from ConnectionDB import ConnectionDB
 from exceptions import (
     InvalidUsernameOrPasswordException,
     NotEnoughMoneyException,
     InvalidAddingAmountException,
+    WrongValidationException
 )
 from queries import (
     SELECT_USER,
@@ -28,12 +30,16 @@ from queries import (
     SELECT_MINIMUM_NOMINAL,
 )
 from utils import take_value, validate_credentials
-from ConnectionDB import ConnectionDB
 
 
 def create_user(name: str, password: str):
-    validate_credentials(name, password)
-    params = (name, password)
+    try:
+        validate_credentials(name, password)
+    except WrongValidationException as e:
+        print(e)
+        start()
+
+    params = (name.lower(), password)
 
     with ConnectionDB() as con:
         cur = con.cursor()
@@ -44,14 +50,19 @@ def create_user(name: str, password: str):
 
 
 def login(name: str, password: str):
-    params = (name, password)
-    with ConnectionDB() as con:
-        cur = con.cursor()
-        user = cur.execute(SELECT_USER, params)
-        user = user.fetchone()
-
-    if not user:
-        raise InvalidUsernameOrPasswordException
+    try:
+        params = (name.lower(), password)
+        with ConnectionDB() as con:
+            cur = con.cursor()
+            query_result = cur.execute(SELECT_USER, params)
+            user = query_result.fetchone()
+        
+        if not user:
+            raise InvalidUsernameOrPasswordException
+        
+    except InvalidUsernameOrPasswordException as e:
+        print(e)
+        start()
 
     print("Welcome to the system!")
     return list(user)
@@ -61,8 +72,8 @@ def get_balance(user: list):
     params = (user[0],)
     with ConnectionDB() as con:
         cur = con.cursor()
-        balance = cur.execute(GET_USER_BALANCE, params)
-        balance = balance.fetchone()
+        query_result = cur.execute(GET_USER_BALANCE, params)
+        balance = query_result.fetchone()
 
     return balance[0]
 
@@ -70,9 +81,14 @@ def get_balance(user: list):
 def add_balance(user: list, new_value: float):
     min_nominal = get_minimal_nominal()
     change = new_value % min_nominal
-    if new_value < min_nominal:
-        raise InvalidAddingAmountException
 
+    try:
+        if new_value < min_nominal:
+            raise InvalidAddingAmountException
+    except InvalidAddingAmountException as e:
+        print(e)
+        return
+    
     if change > 0:
         print(f"Take your change: {change}")
 
@@ -109,9 +125,13 @@ def withdraw_cash(user: list, amount: float):
     current_balance = get_balance(user)
     total_amount = get_total_amount()
 
-    if current_balance < amount or total_amount < amount:
-        raise NotEnoughMoneyException
-
+    try:
+        if current_balance < amount or total_amount < amount:
+            raise NotEnoughMoneyException
+    except NotEnoughMoneyException as e:
+        print(e)
+        return
+    
     params = (current_balance - amount, user[0])
 
     with ConnectionDB() as con:
@@ -120,24 +140,34 @@ def withdraw_cash(user: list, amount: float):
         con.commit()
 
     add_transaction(user, amount, "Withdraw cash")
+    print("The operation is successful!")
 
 
 def get_nominals():
     with ConnectionDB() as con:
         cur = con.cursor()
-        nominals = cur.execute(SELECT_ALL_NOMINALS)
-        nominals = cur.fetchall()
-        for i in nominals:
-            print(f"Nominal {i[1]} - {i[2]}")
+        query_result = cur.execute(SELECT_ALL_NOMINALS)
+        nominals = query_result.fetchall()
+        return nominals
 
 
 def change_nominal_amount():
+    nominals = [i[1] for i in get_nominals()]
     nominal = int(input("What nominal you want to change?: ").strip())
+
+    if nominal not in nominals:
+        print('No such nominal.')
+        return
+    
     amount = int(input("Enter new value: ").strip())
+    if amount < 0:
+        print("You can't user negative value.")
+        return
+    
     with ConnectionDB() as con:
         cur = con.cursor()
-        nominal_id = cur.execute(SELECT_NOMINAL_ID, (nominal,))
-        nominal_id = cur.fetchone()
+        query_result = cur.execute(SELECT_NOMINAL_ID, (nominal,))
+        nominal_id = query_result.fetchone()
 
         params = (amount, nominal_id[0])
         cur.execute(UPDATE_NOMINAL, params)
@@ -149,9 +179,9 @@ def change_nominal_amount():
 def get_total_amount():
     with ConnectionDB() as con:
         cur = con.cursor()
-        cur.execute(SELECT_TOTAL_BALANCE)
-        result = cur.fetchone()
-        return result[0]
+        query_result = cur.execute(SELECT_TOTAL_BALANCE)
+        total_amount = query_result.fetchone()
+        return total_amount[0]
 
 
 def get_minimal_nominal():
@@ -164,28 +194,24 @@ def get_minimal_nominal():
 
 def collector_iteraction():
     while True:
-        answer = input(
-            """
-        1 - Show current nominal's amount
-        2 - Change nominal's amount
-        3 - Exit
-        """
-        ).strip()
+        answer = input("1 - Show current nominal's amount\n2 - Change nominal's amount\n3 - Exit\n").strip()
 
         match answer:
             case "1":
-                get_nominals()
+                nominals = get_nominals()
+                for i in nominals:
+                    print(f"Nominal {i[1]} - {i[2]}")
             case "2":
                 change_nominal_amount()
             case "3":
                 return
             case _:
                 print("No such option. Please, select one from the list.")
-
+        time.sleep(1)
 
 def is_existing():
     while True:
-        answer = input("1 - Sign in \n2 - Sign up\n").strip()
+        answer = input("1 - Sign in \n2 - Sign up\n3 - Exit\n").strip()
 
         match answer:
             case "1":
@@ -193,12 +219,14 @@ def is_existing():
             case "2":
                 user_login = input(
                     "Enter your login. It should be from 3 to 50 symbols: "
-                )
+                ).strip()
                 user_passwrod = input(
                     "Enter your password. It should be from 8 symbols and contain at least 1 digit: "
-                )
+                ).strip()
                 create_user(user_login, user_passwrod)
                 return
+            case "3":
+                exit()
             case _:
                 print("No such option.")
 
@@ -237,11 +265,9 @@ def start():
             case "3":
                 value = take_value()
                 withdraw_cash(logged_in_user, value)
-                print("The operation is successful!")
-
             case "4":
                 print("Thank you for using our system!")
-                return
+                exit()
             case _:
                 print("No such option. Please, select one from the list.")
 
