@@ -1,4 +1,5 @@
 import re
+import random
 
 from exceptions import WrongValidationException
 
@@ -29,3 +30,8 @@ def validate_credentials(name, password):
     for validation_regex, invalid_message in password_validators:
         if not re.match(validation_regex, password):
             raise WrongValidationException(invalid_message)
+
+def isWinner():
+    random_number = random.randint(1, 10)
+    if random_number == 1:
+        return True

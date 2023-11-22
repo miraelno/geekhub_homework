@@ -5,7 +5,8 @@ SELECT_USER = "SELECT * FROM users WHERE name = ? AND password = ?"
 SELECT_USER_BALANCE = "SELECT balance FROM users WHERE id = ?"
 
 ADD_TRANSACTION = "INSERT INTO transactions (datetime, amount, description, user_id) VALUES (?, ?, ?, ?)"
-ADD_USER = "INSERT INTO users (name, password) VALUES (?, ?)"
+ADD_USER_WITH_NO_BONUS = "INSERT INTO users (name, password) VALUES (?, ?)"
+ADD_USER_WITH_BONUS = "INSERT INTO users (name, password, balance) VALUES (?, ?, ?)"
 
 UPDATE_NOMINAL_AMOUNT = "UPDATE banknotes SET amount = ? WHERE nominal = ?"
 UPDATE_USER_BALANCE = "UPDATE users SET balance = ? WHERE id = ?"
