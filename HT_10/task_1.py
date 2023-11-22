@@ -98,7 +98,7 @@ def add_balance(user, new_value: float):
     add_transaction(user, new_value, "Top up at ATM")
 
 
-def add_transaction(user: list, transaction_value: float, transaction_description: str):
+def add_transaction(user, transaction_value: float, transaction_description: str):
     params = (
         str(datetime.datetime.utcnow()),
         transaction_value,
@@ -112,7 +112,7 @@ def add_transaction(user: list, transaction_value: float, transaction_descriptio
         con.commit()
 
 
-def withdraw_cash(user: list, amount: float):
+def withdraw_cash(user, amount: float):
 
     amount = float(amount)
     current_balance = get_balance(user)
