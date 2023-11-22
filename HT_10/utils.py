@@ -1,4 +1,3 @@
-import sqlite3
 import re
 
 from exceptions import WrongValidationException
@@ -12,18 +11,15 @@ def take_value():
     except ValueError:
         print("Please, enter a valid number!")
 
-def get_connection():
-    return sqlite3.connect("ATM_DB.db")
 
 def validate_credentials(name, password):
-    
     name_validators = [
-    (r"\w{3,50}", "Invalid name length"),
+        (r"\w{3,50}", "Invalid name length"),
     ]
 
     password_validators = [
-    (r"\w{8,}", "Invalid password length"),
-    (r"\w*\d+\w*", "Must contain at least 1 digit"),
+        (r"\w{8,}", "Invalid password length"),
+        (r"\w*\d+\w*", "Must contain at least 1 digit"),
     ]
 
     for validation_regex, invalid_message in name_validators:
@@ -33,5 +29,3 @@ def validate_credentials(name, password):
     for validation_regex, invalid_message in password_validators:
         if not re.match(validation_regex, password):
             raise WrongValidationException(invalid_message)
-
-    return True

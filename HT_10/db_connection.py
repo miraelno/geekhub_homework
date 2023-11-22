@@ -1,14 +1,14 @@
 import sqlite3
- 
+
+from db_config import DB_NAME
+
+
 class ConnectionDB:
- 
-    def __init__(self):
-        self.db_name = 'ATM_DB.db'
-    
     def __enter__(self):
-        self.conn = sqlite3.connect(self.db_name)
+        self.conn = sqlite3.connect(DB_NAME)
+        self.conn.row_factory = sqlite3.Row
         return self.conn
-    
+
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.conn.close()
         if exc_val:
