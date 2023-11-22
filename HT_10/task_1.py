@@ -86,9 +86,11 @@ def add_balance(user, new_value: float):
         print(f"Take your change: {change}")
 
     new_value = new_value - change
-
-    current_balance = user["balance"]
+    current_balance = get_balance(user)
+    print(new_value)
+    print(current_balance)
     params = (new_value + current_balance, user["id"])
+    print(params)
 
     with ConnectionDB() as con:
         cur = con.cursor()
