@@ -198,7 +198,7 @@ def collector_iteraction():
             case "2":
                 change_nominal_amount()
             case "3":
-                return
+                exit()
             case _:
                 print("No such option. Please, select one from the list.")
 
@@ -206,35 +206,37 @@ def collector_iteraction():
 
 
 def start_menu():
-    while True:
-        answer = input("1 - Sign in\n2 - Sign up\n3 - Exit\n").strip()
+    answer = input("1 - Sign in\n2 - Sign up\n3 - Exit\n").strip()
 
-        match answer:
-            case "1":
-                return
-            case "2":
-                user_login = input(
-                    "Enter your login. It should be from 3 to 50 symbols: "
-                ).strip()
-                user_passwrod = input(
-                    "Enter your password. It should be from 8 symbols and contain at least 1 digit: "
-                ).strip()
-                create_user(user_login, user_passwrod)
-                return
-            case "3":
-                exit()
-            case _:
-                print("No such option.")
+    match answer:
+        case "1":
+            input_name = input(
+                "Hi! Please, enter your username without speaces: "
+            ).strip()
+            input_password = input("And your password: ").strip()
+
+            return login(input_name, input_password)
+        case "2":
+            user_login = input(
+                "Enter your login. It should be from 3 to 50 symbols: "
+            ).strip()
+            user_passwrod = input(
+                "Enter your password. It should be from 8 symbols and contain at least 1 digit: "
+            ).strip()
+            create_user(user_login, user_passwrod)
+        case "3":
+            exit()
+        case _:
+            print("No such option.")
 
 
 def start():
-    start_menu()
+    logged_in_user = None
 
-    input_name = input("Hi! Please, enter your username without speaces: ").strip()
-    input_password = input("And your password: ").strip()
+    while not logged_in_user:
+        logged_in_user = start_menu()
 
-    logged_in_user = login(input_name, input_password)
-
+    print(logged_in_user["id"])
     if logged_in_user["isCollector"]:
         collector_iteraction()
         return
