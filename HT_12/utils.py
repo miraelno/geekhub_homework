@@ -31,7 +31,7 @@ def validate_credentials(name, password):
         if not re.match(validation_regex, password):
             raise WrongValidationException(invalid_message)
 
-def isWinner():
+def is_winner():
     random_number = random.randint(1, 10)
     if random_number == 1:
         return True
