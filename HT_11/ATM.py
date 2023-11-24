@@ -33,7 +33,7 @@ class ATM:
 
         with ConnectionDB() as con:
             cur = con.cursor()
-            cur.execute(ADD_USER, (name.lower(), password, 100 if is_winner else 0, False))
+            cur.execute(ADD_USER, (name.lower(), password, 100 if is_winner() else 0, False))
             con.commit()
 
         print("Account was created!")
