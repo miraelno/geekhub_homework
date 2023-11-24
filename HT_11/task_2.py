@@ -21,8 +21,8 @@ class Person:
 person_1 = Person("John", 21)
 person_2 = Person("Jake", 30)
 
-person_1.__setattr__("profession", "financier")
-print(person_1.__getattribute__("profession"))
+person_1.profession = "financier"
+print(person_1.profession)
 
-person_2.__setattr__("profession", "waiter")
-print(person_2.__getattribute__("profession"))
+person_2.profession = "waiter"
+print(person_2.profession)

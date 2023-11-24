@@ -15,46 +15,45 @@
 
 
 class Calc:
-    """This class perform math operations with 2 numbers. It has 4 methods: add(),subtraction(),multiplication() and division(). It also has
-    last_result attribut witch store a result of previous math operation."""
+    """
+    This class perform math operations with 2 numbers.
+    It has 4 methods: add(), subtraction(), multiplication() and division().
+    It also has last_result attribut witch store a result of previous math operation.
+    """
 
     last_result = None
-    _last_result = None
+    current_result = None
 
-    def add(self, a, b):
+    def add(self, a: int | float, b: int | float) -> int | float:
         """This method performs adding with 2 numbers."""
-        if self._last_result is not None:
-            self.last_result = self._last_result
+        self.last_result = self.current_result
 
         result = a + b
-        self._last_result = result
+        self.current_result = result
         return result
 
-    def subtraction(self, a, b):
+    def subtraction(self, a: int | float, b: int | float) -> int | float:
         """This method performs subtraction with 2 numbers."""
-        if self._last_result is not None:
-            self.last_result = self._last_result
+        self.last_result = self.current_result
 
         result = a - b
-        self._last_result = result
+        self.current_result = result
         return result
 
-    def multiplication(self, a, b):
+    def multiplication(self, a: int | float, b: int | float) -> int | float:
         """This method performs multiplication with 2 numbers."""
-        if self._last_result is not None:
-            self.last_result = self._last_result
+        self.last_result = self.current_result
 
         result = a * b
-        self._last_result = result
+        self.current_result = result
         return result
 
-    def division(self, a: (int, float), b: (int, float)) -> (int, float):
+    def division(self, a: int | float, b: int | float) -> int | float:
         """This method performs division with 2 numbers."""
-        if self._last_result is not None:
-            self.last_result = self._last_result
+        self.last_result = self.current_result
 
         result = a / b
-        self._last_result = result
+        self.current_result = result
         return result
 
 
