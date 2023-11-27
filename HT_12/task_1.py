@@ -5,4 +5,4 @@ from ATM import ATM
 
 if __name__ == "__main__":
     atm = ATM()
-    atm.define_banknotes(160)
+    atm.start()

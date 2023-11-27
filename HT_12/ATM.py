@@ -1,4 +1,5 @@
 import datetime
+from itertools import product
 import time
 
 from db_connection import ConnectionDB
@@ -110,15 +111,51 @@ class ATM:
             return
         
         self.user.balance -= amount
-        params = (self.user.balance, self.user.id)
+        user_balance_params = (self.user.balance, self.user.id)
+        given_banknotes = self.define_banknotes(amount)
+        
+        if given_banknotes is None:
+            print("This ATM don't have needed nominals. Try again with different amount.")
+            return
+        
+        self.insert_changed_banknotes(given_banknotes)
 
         with ConnectionDB() as con:
             cur = con.cursor()
-            cur.execute(UPDATE_USER_BALANCE, params)
+            cur.execute(UPDATE_USER_BALANCE, user_balance_params)
             con.commit()
+
+        print('Your bills:')    
+        for banknote, count in given_banknotes.items():
+            print(f'{banknote} x {count}') 
 
         self.add_transaction(amount, "Withdraw cash")
         print("The operation is successful!")
+
+    def insert_changed_banknotes(self, updated_banknotes):
+        banknotes_from_db = {row["nominal"]: row["amount"] for row in self.get_nominals()}
+        for banknote in banknotes_from_db:
+            if banknote in updated_banknotes:
+                banknotes_from_db[banknote] -= updated_banknotes[banknote]
+
+        params = list(banknotes_from_db.items())
+        with ConnectionDB() as con:
+            cur = con.cursor()
+            cur.execute(
+                "CREATE TABLE new_banknotes (id INTEGER PRIMARY KEY AUTOINCREMENT, nominal INTEGER, amount INTEGER)"
+            )
+            cur.executemany("""
+                INSERT INTO new_banknotes (nominal, amount)
+                VALUES (?, ?)
+            """, params)
+            cur.execute("""
+                UPDATE banknotes
+                SET amount = n.amount
+                FROM (SELECT nominal, amount FROM new_banknotes) as n
+                WHERE n.nominal = banknotes.nominal
+            """)
+            con.commit()
+            cur.execute("DROP TABLE new_banknotes")
 
     def get_nominals(self):
         with ConnectionDB() as con:
@@ -165,45 +202,21 @@ class ATM:
 
         return row["min_nominal"]
 
-    def define_banknotes(self, amount):
-        result_dict = {}
-        with ConnectionDB() as con:
-            cur = con.cursor()
-            query_result = cur.execute("SELECT nominal, amount FROM banknotes")
-            row = query_result.fetchall()
-            banknotes = {key: value for key, value in row if value > 0 and amount // key > 0}
+    def define_banknotes(self, amount: int | float):
+            remaining_banknotes = {
+                r['nominal']: r['amount']
+                for r in reversed(self.get_nominals())
+                if r['amount'] > 0 and r['nominal'] <= amount
+            }
+            combinations = product(*(range(nominal_amount, -1, -1) for nominal_amount in remaining_banknotes.values()))
 
-        nominals = list(banknotes.keys())
-        nominals.reverse()
-        minimal_nominal = min(nominals)
-        contain_minimal_nominal = amount // minimal_nominal
-        # result_dict[minimal_nominal] = contain_minimal_nominal
+            for combination in combinations:
+                case_dict = {k: v for k, v in zip(remaining_banknotes.keys(), combination)}
+                case_sum = sum([k * v for k, v in case_dict.items()])
+                if case_sum == amount:
+                    return {k: v for k, v in case_dict.items() if v > 0}
 
-        for i, value in enumerate(nominals):
-            # next_nominal = nominals[i + 1]
-
-            if value % minimal_nominal == 0:
-                result_dict[value] = amount // value
-                amount -= value * (amount // value)
-
-            if amount % minimal_nominal > 0:
-                result_dict[minimal_nominal] -= amount // value
-
-        # for i, value in enumerate(nominals):
-        #     if amount % value > 0:
-        #         if amount - value >= minimal_nominal:
-        #             if amount - value % nominals[i + 1] > 0:
-        #                 result_dict[value] = amount // value
-        #                 banknotes[value] -= amount // value
-        #                 amount -= value
-        #         else:
-        #             continue
-        #     else:
-        #         result_dict[value] = amount // value
-        #         banknotes[value] -= amount // value
-        #         break
-
-        print(result_dict)     
+            return None    
 
     def collector_interaction(self):
         while True:

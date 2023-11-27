@@ -39,7 +39,7 @@ if __name__ == "__main__":
     """)
     cur.execute("""
         INSERT INTO banknotes (nominal, amount)
-        VALUES (10, 0), (20, 6), (50, 4), (100, 1), (200, 1), (500, 0), (1000, 0)
+        VALUES (10, 5), (20, 1), (50, 1), (100, 0), (200, 4), (500, 1), (1000, 5)
     """)
 
     con.commit()
