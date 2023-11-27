@@ -20,13 +20,12 @@ class User:
 
         return row["balance"]
     
+    # @property
+    # def balance(self):
+    #     self._balance = self.get_balance_from_db()
+    #     return self._balance
 
-    @property
-    def balance(self):
-        self._balance = self.get_balance_from_db()
-        return self._balance
 
-
-    @balance.setter
-    def balance(self, new_balance):
-        self._balance = new_balance
+    # @balance.setter
+    # def balance(self, new_balance):
+    #     self._balance = new_balance

@@ -75,7 +75,7 @@ class ATM:
         if change > 0:
             print(f"Take your change: {change}")
             new_value = new_value - change
-        
+
         self.user.balance += new_value
         params = (self.user.balance, self.user.id)
 
@@ -113,7 +113,7 @@ class ATM:
         self.user.balance -= amount
         user_balance_params = (self.user.balance, self.user.id)
         given_banknotes = self.define_banknotes(amount)
-        
+
         if given_banknotes is None:
             print("This ATM don't have needed nominals. Try again with different amount.")
             return
