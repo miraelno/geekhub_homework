@@ -1,6 +1,7 @@
 from models.author import Author
 from models.category import Category
 from models.base import BaseDatabaseConnector
+from db_connector import ConnectionDB
 
 
 class Book(BaseDatabaseConnector):
@@ -19,7 +20,7 @@ class Book(BaseDatabaseConnector):
     def save(self):
         if self.id:
             super()._update(
-                """
+            """
                 UPDATE categories
                 SET name = ?, category_id = ?, author_id = ?
                 WHERE id = ?
@@ -28,9 +29,17 @@ class Book(BaseDatabaseConnector):
             )
         else:
             super()._insert(
-                """
-                    INSERT INTO books (name, category_id, author_id)
-                    VALUES (?, ?, ?)
-                """,
+            """
+                INSERT INTO books (name, category_id, author_id)
+                VALUES (?, ?, ?)
+            """,
                 (self.name, self.category.id, self.author.id),
+            )
+
+    @classmethod
+    def get_book_by_id(cls, id):
+        return super()._select_one(
+            """
+                SELECT * FROM books WHERE id = ?
+            """, (id,)
             )

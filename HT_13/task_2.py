@@ -8,9 +8,6 @@ from models.base import BaseDatabaseConnector
 
 
 class Library(BaseDatabaseConnector):
-    def find_book():
-        pass
-
     @property
     def all_books(self):
         books = super()._select_all("SELECT * FROM books", ())
@@ -36,39 +33,31 @@ class Library(BaseDatabaseConnector):
 
         while True:
             menu_option = input(
-                "1 - Show book\n2 - Take book\n3 - My books\n4 - Exit\n"
+                "1 - Show books\n2 - Take book\n3 - My books\n4 - Exit\n"
             ).strip()
 
             match menu_option:
                 case "1":
                     [print(book) for book in self.all_books]
+
                 case "2":
-                    [print(book) for book in self.all_books]
-                    selected_book_name = input("Select book name: ").strip()
-                    book = Book(selected_book_name)
-                    print(book)
+                    {print(f'{book[1]} -> {book[0]}') for book in self.all_books.items()}
+                    selected_book_id = input("Select book number: ").strip()
+                    book = Book.get_book_by_id(selected_book_id)
+                    student.add_book(book['id'])
+                    print(f'The book {book["name"]} is taken.')
 
                 case "3":
-                    pass
+                    taken_books = student.taken_books
+                    for i in taken_books:
+                        [print(f'{i[0]} -> {i[1]}') for i in i.items()]
+
                 case "4":
                     exit()
+                    
                 case _:
                     print("No such option. Try again.")
 
 
 lib = Library()
 lib.interactive_menu()
-# c = Category('New test')
-# # c.save()
-# print(c.name)
-# c.delete()
-# print(c.name)
-# books = c.books
-# print(books)
-
-# s = Student('John','Doe', 'Math101')
-# print(s.taken_books)
-# s2 = Student('New', 'Student', 'Test')
-# s2.save()
-# print(s2)
-# print(s2.taken_books)

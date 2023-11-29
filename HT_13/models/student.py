@@ -6,8 +6,8 @@ class Student(BaseDatabaseConnector):
     def __init__(self, first_name: str, last_name: str, class_name: str):
         self.obj = super()._select_one(
             """
-            SELECT * FROM students
-            WHERE first_name = ? AND last_name = ?
+                SELECT * FROM students
+                WHERE first_name = ? AND last_name = ?
             """,
             (first_name, last_name),
         )
@@ -35,26 +35,26 @@ class Student(BaseDatabaseConnector):
                 (self.first_name, self.last_name, self.class_name),
             )
 
-    def add_book(self, book: Book):
+    def add_book(self, book_id: int):
         super()._insert(
             """
                     INSERT INTO books_to_students (student_id, book_id)
                     VALUES (?, ?)
                 """,
-            (self.first_name, self.last_name, self.class_name, self.id),
+            (self.id, book_id),
         )
 
     @property
     def taken_books(self):
         books = self._select_all(
             """
-            SELECT books.name AS book_name, authors.name AS author_name
-            FROM books
-            JOIN books_to_students
-            ON books.id = books_to_students.book_id
-            JOIN authors
-            ON books.author_id = authors.id
-            WHERE books_to_students.student_id = ?
+                SELECT books.name AS book_name, authors.name AS author_name
+                FROM books
+                JOIN books_to_students
+                ON books.id = books_to_students.book_id
+                JOIN authors
+                ON books.author_id = authors.id
+                WHERE books_to_students.student_id = ?
             """,
             (self.id,),
         )
