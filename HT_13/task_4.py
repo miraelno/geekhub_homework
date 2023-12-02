@@ -5,11 +5,19 @@
 
 class MyList(list):
     counter = 1
-
     def __getitem__(self, i):
         if i == 0:
             raise Exception()
+        elif i < 0:
+           return super().__getitem__(i)
+              
         return super().__getitem__(i - self.counter)
+    
+my_list = MyList((1, 2, 3))
+list1 = [1, 2, 3]
 
+print(my_list[1])
+print(list1[1])
 
-my_list = MyList((1, 2))
+print(my_list[-1])
+print(list1[-1])
