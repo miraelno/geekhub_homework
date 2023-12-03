@@ -28,8 +28,6 @@ class CurrencyAPI:
         print(f"{result['exchangedate']} -> {round(result['rate'], 2)}")
         
 
-    
-
 c = CurrencyAPI()
 c.get_currency_for_range('20220115', '20220131', 'eur')
 c.get_currency_for_day('20231203', 'eur')

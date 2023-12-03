@@ -2,3 +2,79 @@
 # - збирається інформація з 10 сторінок сайту.
 # - зберігати зібрані дані у CSV файл
 
+import csv
+import os
+
+import requests
+from bs4 import BeautifulSoup
+
+
+class QuotesScraper:
+    def __init__(self):
+        self.url = 'http://quotes.toscrape.com'
+        self.authors = {}
+
+    def add_data_to_file(self, data):
+
+        headers = ['Quote', 'Author', 'Tags', 'Born', 'Description']
+        with open('data.csv', 'a+', encoding="utf-8") as f:
+            needs_header = os.stat('data.csv').st_size == 0
+            writer_obj = csv.writer(f)
+
+            if needs_header:
+                writer_obj.writerow(headers)
+                needs_header = False
+        
+            writer_obj.writerow(data)
+
+            f.close()
+
+    def get_author_info(self, url):
+        author_record = []
+        r = requests.get(url)
+        soup = BeautifulSoup(r.text, "html.parser")
+        born_info = soup.find('div', 'author-details').find('p').text
+        description = soup.find('div', 'author-description').text.strip()
+        
+        author_record.append(born_info)
+        author_record.append(description)
+
+        return author_record
+
+    def get_data(self):
+        new_record = []
+        r = requests.get(self.url)
+        while True:
+            soup = BeautifulSoup(r.text, "html.parser")
+            all_quotes_on_page = soup.find_all('div', 'quote')
+            try:
+                next_page_link = soup.find('li', 'next').find('a').get('href')
+            except AttributeError:
+                print("Scrapping is finished!")
+                break
+
+            for i in range(len(all_quotes_on_page)):
+                quote_tag = all_quotes_on_page[i]
+
+                quote_text = quote_tag.find('span', 'text').text
+                author = quote_tag.find('small', 'author').text
+                tags_list = [t.text for t in quote_tag.find_all('a', 'tag')]
+                
+                new_record.append(quote_text)
+                new_record.append(author)
+                new_record.append(tags_list)
+
+                if author in self.authors.keys():
+                    new_record.append(self.authors[author])
+                else:
+                    link = f"{self.url}{quote_tag.find('a').get('href')}"
+                    new_record.extend(self.get_author_info(link))
+
+                self.add_data_to_file(new_record)
+                new_record.clear()
+
+                r = requests.get(f"{self.url}{next_page_link}")
+
+
+q = QuotesScraper()
+q.get_data()
