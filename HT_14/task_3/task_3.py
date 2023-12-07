@@ -18,11 +18,10 @@ class QuotesScraper:
         headers = ["Quote", "Author", "Tags", "Born", "Description"]
         with open("data.csv", "a+", encoding="utf-8") as f:
             needs_header = os.stat("data.csv").st_size == 0
-            writer_obj = csv.writer(f)
+            writer_obj = csv.writer(f, delimiter=',')
 
             if needs_header:
                 writer_obj.writerow(headers)
-                needs_header = False
 
             writer_obj.writerow(data)
 
@@ -36,12 +35,12 @@ class QuotesScraper:
 
     def get_data(self):
         r = requests.get(self.url)
-        while True:
+
+        for i in range(10):
             soup = BeautifulSoup(r.text, "html.parser")
             all_quotes_on_page = soup.find_all("div", "quote")
 
-            for i in range(len(all_quotes_on_page)):
-                quote_tag = all_quotes_on_page[i]
+            for quote_tag in all_quotes_on_page:
 
                 quote_text = quote_tag.find("span", "text").text
                 author = quote_tag.find("small", "author").text
