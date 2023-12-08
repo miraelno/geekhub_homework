@@ -37,6 +37,11 @@ class CurrencyAPI:
         }
         r = requests.get(self.url_for_range, params=params)
         result_list = r.json()
+
+        if len(r.json()) == 0:
+            print("No information for this range or currency.")
+            return
+        
         for record in result_list:
             print(f"{record['exchangedate']}: {round(record['rate'], 2)} ")
 
@@ -47,6 +52,11 @@ class CurrencyAPI:
             "json": "",
         }
         r = requests.get(self.url_for_day, params=params)
+
+        if len(r.json()) == 0:
+            print("No information for this day or currency.")
+            return
+        
         result = r.json()[0]
         print(f"{result['exchangedate']} -> {round(result['rate'], 2)}")
 
@@ -54,7 +64,7 @@ class CurrencyAPI:
         date_from_user = input("Enter one date or date range in format YYYYMMDD YYYYMMDD: ").strip().split(' ')
         formatted_dates_list = self.validate_date(date_from_user)
 
-        if(formatted_dates_list == None):
+        if formatted_dates_list is None:
             return
         
         if len(date_from_user) == 1:
