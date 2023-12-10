@@ -52,7 +52,7 @@ def login(name: str, password: str):
             cur = con.cursor()
             query_result = cur.execute(SELECT_USER, params)
             user = query_result.fetchone()
-
+            print(user['id'])
         if not user:
             raise InvalidUsernameOrPasswordException
 
@@ -61,6 +61,7 @@ def login(name: str, password: str):
         start()
 
     print("Welcome to the system!")
+
     return user
 
 

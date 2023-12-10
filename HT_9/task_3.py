@@ -54,7 +54,7 @@ def get_balance(user_name: str):
         return float(user_balance)
 
 
-def update_balance(user_name: str, new_value: float):
+def add_balance(user_name: str, new_value: float):
     balance_file = find_file(FileTypes.BALANCE, user_name)
 
     with open(balance_file, 'w') as f:
@@ -84,7 +84,7 @@ def withdraw_cash(user_name: str, amount: float):
         "description": "Withdraw cash"
     }
 
-    update_balance(user_name, balance - amount)
+    add_balance(user_name, balance - amount)
     add_transaction(user_name, transaction_data)
 
 
@@ -116,7 +116,7 @@ def start():
                         print('Negative value!')
                         continue
                         
-                    update_balance(input_name, value + current_balance)
+                    add_balance(input_name, value + current_balance)
                     print('The operation is successful!')
 
                     transaction_data = {
@@ -133,7 +133,7 @@ def start():
                         else:
                             print('Not enough money. Try again.')
 
-                    update_balance(input_name, current_balance - value)
+                    add_balance(input_name, current_balance - value)
                     print('The operation is successful!')
 
                     transaction_data = {

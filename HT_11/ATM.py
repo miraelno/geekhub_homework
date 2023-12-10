@@ -110,6 +110,8 @@ class ATM:
             return
         
         self.user.balance -= amount
+        print(self.user.balance)
+        input()
         params = (self.user.balance, self.user.id)
 
         with ConnectionDB() as con:
