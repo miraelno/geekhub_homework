@@ -52,15 +52,14 @@ def find_info():
 
         write_to_csv(domain_text_list)
 
-        try:
-            soup.find("a", "next")
-        except AttributeError:
+
+        if soup.find("a", "next") is None:
             print("Scrapping is finished!")
             return
 
         params = {"start": counter_page}
         counter_page += 25
-        time.sleep(10)
+        time.sleep(7)
         site_content = get_data(params)
 
 
