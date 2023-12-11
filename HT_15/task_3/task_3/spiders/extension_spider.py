@@ -26,8 +26,9 @@ class ExtensionsSpider(scrapy.Spider):
             yield scrapy.Request(url=url.text, callback=self.parse_extension_page)
 
     def parse_extension_page(self, response):
+        id = response.css('[property="og:url"]::attr(content)').get().split('/').pop()
         name = response.css('[property="og:title"]::attr(content)').get()
         description = response.css('[property="og:description"]::attr(content)').get()
-        extension = ExtensionItem(name=name, description=description)
+        extension = ExtensionItem(id=id, name=name, description=description)
 
         yield extension

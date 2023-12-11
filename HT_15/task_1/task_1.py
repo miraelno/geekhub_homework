@@ -5,6 +5,8 @@
 
 import csv
 import os
+import json
+import time
 
 import requests
 from fake_useragent import UserAgent
@@ -13,9 +15,11 @@ from fake_useragent import UserAgent
 category_id = input("Enter category id: ").strip()
 
 
-def get_data(category_id):
+def get_data(category_id, start_index, end_index):
     ua = UserAgent()
     params = {
+        "startIndex": start_index,
+        "endIndex": end_index,
         "searchType": "category",
         "store": "Sears",
         "storeId": 10153,
@@ -43,19 +47,30 @@ def write_to_csv(category_id, data):
         writer_obj.writerow(data)
 
 
+
 def find_product_info():
-    data = get_data(category_id)
-    product_items = data["items"]
+    start_index = 1
+    end_index = start_index + 47
 
-    for item in product_items:
-        data = [
-            item["brandName"],
-            item["name"],
-            item["category"],
-            item["price"]["messageTags"]["finalPrice"],
-        ]
-        write_to_csv(category_id, data)
+    while True:
+        data = get_data(category_id, start_index, end_index)
 
+        if product_items is None:
+            break
+
+        product_items = data["items"]
+
+        for item in product_items:
+            data = [
+                item["brandName"],
+                item["name"],
+                item["category"],
+                item["price"]["messageTags"]["finalPrice"],
+            ]
+            write_to_csv(category_id, data)
+        end_index += 47
+        time.sleep(15)
+        
     print("Finished!")
 
 
