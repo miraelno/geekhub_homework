@@ -46,7 +46,6 @@ def write_to_csv(category_id, data):
         writer_obj.writerow(data)
 
 
-
 def find_product_info():
     start_index = 1
     end_index = start_index + 47
