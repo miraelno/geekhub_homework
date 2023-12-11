@@ -29,7 +29,7 @@ def get_data(category_id, start_index, end_index):
         headers={"Authorization": "SEARS", "User-Agent": ua.random},
         params=params,
     )
-
+    
     return r.json()
 
 
@@ -53,10 +53,10 @@ def find_product_info():
     while True:
         data = get_data(category_id, start_index, end_index)
 
-        if product_items is None:
+        try:
+            product_items = data["items"]
+        except KeyError:
             break
-
-        product_items = data["items"]
 
         for item in product_items:
             data = [
@@ -66,10 +66,11 @@ def find_product_info():
                 item["price"]["messageTags"]["finalPrice"],
             ]
             write_to_csv(category_id, data)
+
+        start_index = end_index + 1
         end_index += 47
         time.sleep(15)
-        
-    print("Finished!")
 
+    print("Finished!")
 
 find_product_info()
