@@ -6,9 +6,9 @@ import csv
 import os
 import time
 
-import requests
-from fake_useragent import UserAgent
 from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
+import requests
 
 
 def get_data(params=None):
@@ -51,7 +51,6 @@ def find_info():
             domain_text_list.append(row.text)
 
         write_to_csv(domain_text_list)
-
 
         if soup.find("a", "next") is None:
             print("Scrapping is finished!")
