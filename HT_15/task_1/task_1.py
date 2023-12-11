@@ -5,7 +5,6 @@
 
 import csv
 import os
-import json
 import time
 
 import requests
