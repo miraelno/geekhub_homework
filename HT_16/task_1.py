@@ -81,6 +81,4 @@ class OrderAutomation:
 
 
 automation_script = OrderAutomation()
-# automation_script.open_order_page()
-# automation_script.create_orders_details_file()
 automation_script.create_orders()
