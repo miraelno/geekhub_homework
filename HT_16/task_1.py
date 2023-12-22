@@ -59,24 +59,27 @@ class OrderAutomation:
         self.order_page.check_modal()
 
     def create_orders(self):
-        self.open_order_page()
-        orders_info = self.get_orders_info_reader()
-        next(orders_info)
-        self.prepare_output_folder()
+        try:
+            self.open_order_page()
+            orders_info = self.get_orders_info_reader()
+            next(orders_info)
+            self.prepare_output_folder()
 
-        for order in orders_info:
-            self.order_page.select_head_parameter(order['head'])
-            self.order_page.select_body_parameter(order['body'])
-            self.order_page.enter_legs_quantity(order['legs'])
-            self.order_page.enter_address(order['address'])
-            self.order_page.click_preview_button()
-            self.order_page.save_robot_image()
-            self.order_page.click_order_button()
-            order_id = self.order_page.get_order_id()
-            self.rename_image(order_id)
-            self.order_page.order_another()
-            time.sleep(5)
-        
+            for order in orders_info:
+                self.order_page.select_head_parameter(order['head'])
+                self.order_page.select_body_parameter(order['body'])
+                self.order_page.enter_legs_quantity(order['legs'])
+                self.order_page.enter_address(order['address'])
+                self.order_page.click_preview_button()
+                self.order_page.save_robot_image()
+                self.order_page.click_order_button()
+                order_id = self.order_page.get_order_id()
+                self.rename_image(order_id)
+                self.order_page.order_another()
+                time.sleep(5)
+        except Exception:
+            self.driver.close()
+            
         self.driver.close()
 
 

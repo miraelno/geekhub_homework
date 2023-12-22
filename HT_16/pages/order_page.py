@@ -2,6 +2,8 @@ import time
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 
 
@@ -32,13 +34,13 @@ class OrderPage:
         address_input.send_keys(address)
     
     def click_preview_button(self):
-        self.driver.execute_script("window.scrollBy(0, 200)")
+        self.driver.execute_script("document.getElementById('preview').scrollIntoView();")
         time.sleep(4)
-        button = self.driver.find_element(By.ID, 'preview')
+        button = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'preview')))
         button.click()
 
     def click_order_button(self):
-        button = self.driver.find_element(By.ID, 'order')
+        button = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'order')))
         while True:
             button.click()
             try:
@@ -47,8 +49,8 @@ class OrderPage:
                 break
 
     def save_robot_image(self):
-        image = self.driver.find_element(By.ID, 'robot-preview-image')
-        self.driver.execute_script("window.scrollBy(0, 1000)")
+        image = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.ID, 'robot-preview-image')))
+        self.driver.execute_script("document.getElementById('robot-preview-image').scrollIntoView();")
         time.sleep(4)
         screenshot = image.screenshot_as_png
 
