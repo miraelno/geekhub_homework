@@ -21,10 +21,9 @@ def add_product(request):
 
     if form.is_valid():
         product_ids = form.cleaned_data.get('product_ids', '').split(' ')
+
         pool = Pool()
-        pool.map(save_scrapped_data, product_ids)
-        # for product_id in product_ids:
-        #     save_scrapped_data(product_id)
+        print(pool.map(save_scrapped_data, product_ids))
 
         context['started'] = True
         context['product_ids'] = product_ids
