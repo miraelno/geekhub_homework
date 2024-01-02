@@ -1,28 +1,46 @@
 import logging
+from multiprocessing import Pool
 
 from django.shortcuts import render
-from django.views.generic.list import ListView
-from .forms import ProductForm
+from .forms import ProductsAddForm
+from .forms import ProductDetailForm
 
 from main.models import Product
+from main.product_scrapper import save_scrapped_data
 
 logger = logging.getLogger('django')
 
-class AllProductsList(ListView):
-    model = Product
-    paginate_by = 20
-    template_name = 'product_index.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["title"] = "Products list"
-        return context
+def product_list(request):
+    return render(request, "product_list.html", {'products': Product.objects.all()})
 
 
 def add_product(request):
-    form = ProductForm(request.POST)
-    
-    if form.is_valid():
-        print(form.cleaned_data)
+    form = ProductsAddForm(request.POST)
+    context = {'form': form}
 
-    return render(request, "product_index.html", {'form': form})
+    if form.is_valid():
+        product_ids = form.cleaned_data.get('product_ids', '').split(' ')
+        pool = Pool()
+        pool.map(save_scrapped_data, product_ids)
+        # for product_id in product_ids:
+        #     save_scrapped_data(product_id)
+
+        context['started'] = True
+        context['product_ids'] = product_ids
+
+    return render(request, "product_add.html", context)
+
+
+def product_detail(request):
+    context = {'form': ProductDetailForm(request.POST)}
+
+    product_id = request.POST.get('product_id', None)
+    if product_id:
+        product = Product.objects.filter(pk=product_id).first()
+        context.update({
+            'product': product,
+            'has_result': True,
+        })
+
+    return render(request, "product_detail.html", context)
