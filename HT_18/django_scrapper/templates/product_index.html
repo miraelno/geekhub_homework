@@ -1,3 +1,8 @@
-{% block base %}
-    <h1>Hello product</h1>
+{% extends 'base.html' %} {% block content %}
+<form method="post" action="">
+  {% csrf_token %}
+  <label for="product_id">Product's ID: </label>
+  <input id="product_id" type="text" name="product_id" />
+  <input type="submit" value="OK" />
+</form>
 {% endblock %}

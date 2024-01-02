@@ -1,12 +1,12 @@
+import logging
+
 from django.shortcuts import render
-
-from django.utils import timezone
-from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-
+from .forms import ProductForm
 
 from main.models import Product
 
+logger = logging.getLogger('django')
 
 class AllProductsList(ListView):
     model = Product
@@ -17,3 +17,12 @@ class AllProductsList(ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Products list"
         return context
+
+
+def add_product(request):
+    form = ProductForm(request.POST)
+    
+    if form.is_valid():
+        print(form.cleaned_data)
+
+    return render(request, "product_index.html", {'form': form})

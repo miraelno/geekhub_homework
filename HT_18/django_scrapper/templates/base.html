@@ -8,9 +8,6 @@
     <title>Hello</title>
 </head>
 <body>
-    <div>
-        <p>Product content</p>
-        {% include "product_index.html" %}
-    </div>
+    {% block content %}{% endblock %}
 </body>
 </html>
