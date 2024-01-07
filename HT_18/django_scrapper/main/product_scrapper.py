@@ -14,8 +14,12 @@ def start_scrapping(product_id):
     base_url = f"https://www.sears.com/api/sal/v3/products/details/{product_id}" 
 
     r = requests.get(url=base_url, headers=headers, params=params)
-    response_json = r.json()
-    product_info_dict = response_json['productDetail']['softhardProductdetails'][0]
+    try:
+        response_json = r.json()
+        product_info_dict = response_json['productDetail']['softhardProductdetails'][0]
+    except Exception:
+        raise Exception 
+    
     result_dict = {
         "id": product_id,
         "name": product_info_dict['descriptionName'],
