@@ -1,5 +1,6 @@
 import django
 django.setup()
+
 from urllib.parse import urljoin
 
 from main.models import Product
@@ -35,3 +36,8 @@ def start_scrapping(product_id):
 def save_scrapped_data(product_id):
     data = start_scrapping(product_id)
     Product.objects.update_or_create(id=product_id, defaults={**data})
+
+
+if __name__ == '__main__':
+    import django
+    django.setup()

@@ -23,7 +23,7 @@
             <td>{{ product.description }}</td>
             <td>{{ product.brand }}</td>
             <td><a href="{{ product.link }}" target=”_blank”>{{ product.link }}</a></td>
-            <td><a href="/product/detail/{{product.id}}" target=”_blank”>Details page</a></td>
+            <td><a href="{% url 'main:product_detail' product.id %}" target=”_blank”>Details page</a></td>
         </tr>
     {% endfor %}
 </table>
