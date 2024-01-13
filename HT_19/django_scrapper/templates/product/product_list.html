@@ -1,0 +1,32 @@
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+
+{% extends 'base.html' %} {% block content %}
+<table>
+    <tr>
+      <th style="width:10%">ID</th>
+      <th style="width:20%">Name</th>
+      <th style="width:5%">Price</th>
+      <th style="width:30%">Description</th>
+      <th style="width:5%">Brand</th>
+      <th style="width:15%">Link</th>
+      <th style="width:8%">Details</th>
+      <th style="width:15%">Add to cart</th>
+    </tr>
+    {% for product in products %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.brand }}</td>
+            <td><a href="{{ product.link }}" target=”_blank”>{{ product.link }}</a></td>
+            <td><a href="{% url 'main:product_detail' product.id %}" target=”_blank”>Details page</a></td>
+            <td><a href="{% url 'cart:cart_add' product.id%}" target=”_blank”>Add to cart</a></td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

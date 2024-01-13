@@ -1,0 +1,8 @@
+{% extends 'base.html' %} {% block content %}
+hello from cart
+{%if cart %}
+    there is some items
+{% else %}
+    Cart is empty
+{% endif %}
+{% endblock %}
