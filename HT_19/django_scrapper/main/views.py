@@ -37,4 +37,3 @@ class ProductDetail(DetailView):
     model = Product
     template_name = "product/product_detail.html"
     context_object_name = "product"
-

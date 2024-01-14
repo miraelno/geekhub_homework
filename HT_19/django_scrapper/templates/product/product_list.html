@@ -1,6 +1,7 @@
 <style>
     table, th, td {
         border: 1px solid black;
+        text-align: center;
     }
 </style>
 
@@ -25,7 +26,7 @@
             <td>{{ product.brand }}</td>
             <td><a href="{{ product.link }}" target=”_blank”>{{ product.link }}</a></td>
             <td><a href="{% url 'main:product_detail' product.id %}" target=”_blank”>Details page</a></td>
-            <td><a href="{% url 'cart:cart_add' product.id%}" target=”_blank”>Add to cart</a></td>
+            <td><a href="{% url 'cart:cart_add' product.id%}">Add to cart</a></td>
         </tr>
     {% endfor %}
 </table>
