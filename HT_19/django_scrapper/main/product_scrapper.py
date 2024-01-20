@@ -17,7 +17,6 @@ def start_scrapping(product_id):
     r = requests.get(url=base_url, headers=headers, params=params)
     try:
         response_json = r.json()
-        print(response_json)
         product_info_dict = response_json['productDetail']['softhardProductdetails'][0]
     except Exception:
         raise Exception 

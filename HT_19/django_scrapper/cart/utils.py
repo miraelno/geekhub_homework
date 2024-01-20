@@ -1,7 +1,7 @@
 def get_or_create_session_cart(request):
-    cart = request.session.get("session_key")
+    return request.session.get("shopping_cart", [])
 
-    if "session_key" not in request.session:
-        cart = request.session["session_key"] = {}
-
-    return cart
+def get_product_from_cart(cart, product_id):
+    for product in cart:
+        if product.get(product_id):
+            return product
