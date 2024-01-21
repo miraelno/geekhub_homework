@@ -1,0 +1,16 @@
+{% block content %}
+<a href="http://127.0.0.1:8000/product/list/">Products List</a><br>
+{% if user.is_superuser%}
+<a href="http://127.0.0.1:8000/product/add/">Add new products</a><br>
+{% endif %}
+<a href="http://127.0.0.1:8000/cart">Cart</a><br>
+
+{% if user.is_authenticated%}
+<p>{{user.username}}</p>
+<a href="http://127.0.0.1:8000/user/logout">Logout</a><br>
+{% else %}
+<a href="http://127.0.0.1:8000/user/login">Login</a><br>
+{% endif %}
+
+<br>
+{% endblock %}

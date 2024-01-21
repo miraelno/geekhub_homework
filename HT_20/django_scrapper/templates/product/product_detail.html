@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block content %}
+{% include "navigation.html" %}
+
+{% if user.is_superuser%}
+<a href="{% url 'main:product_edit' pk=product.id %}"><span>Edit</span></a>
+<a href="{% url 'main:product_delete' pk=product.id %}"><span>Delete</span></a>
+{% endif %}
+
+<p>Detail info:</p>
+    <b>ID</b>: {{ product.id }}<br>
+    <b>Name</b>: {{ product.name }}<br>
+    <b>Price</b>: {{ product.price }}<br>
+    <b>Description</b>: {{ product.description }}<br>
+    <b>Brand</b> : {{ product.brand }}<br>
+    <b>Category</b> : {{ product.category.name }}<br>
+    <b>Link</b>: {{ product.link }}<br>
+{% endblock %}
