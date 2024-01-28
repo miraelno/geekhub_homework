@@ -1,0 +1,15 @@
+{% extends 'base.html' %} {% block content %}
+{% include "navigation.html" %}
+
+<form method="post" action="">
+  {% csrf_token %}
+  <label for="product_ids">Put product ID in format: A122177277 A122177272: </label>
+  <input id="product_ids" type="text" name="product_ids" placeholder="A122177277 A122177272"/>
+  <input type="submit" value="OK" />
+</form>
+{% if started %}
+  Scrapping started for {{product_ids}}
+{% elif started is False %}
+  Invalid ID value
+{% endif %}
+{% endblock %}
