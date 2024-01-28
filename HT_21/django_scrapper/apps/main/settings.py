@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'apps.main',
     'apps.cart',
     'apps.user',
-    'apps.rest',
+    'apps.templates',
+    'apps.products',
 ]
 
 MIDDLEWARE = [
@@ -53,10 +54,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'apps.main.middlewares.CustomPermissionIsSuperUserMiddleware',
+    'apps.products.middlewares.CustomPermissionIsSuperUserMiddleware',
 ]
 
-ROOT_URLCONF = 'apps.django_scrapper.urls'
+ROOT_URLCONF = 'apps.main.urls'
 
 TEMPLATES = [
     {
@@ -74,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'apps.django_scrapper.wsgi.application'
+WSGI_APPLICATION = 'apps.main.wsgi.application'
 
 
 # Database

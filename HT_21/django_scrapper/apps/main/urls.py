@@ -1,12 +1,30 @@
+"""
+URL configuration for django_scrapper project.
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/5.0/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
 from django.urls import path
+from django.urls import include
 
 from . import views
 
-app_name = 'main'
 urlpatterns = [
-    path('list/', views.ListProductAPIView.as_view(), name='product_list'),
-    path('add/', views.CreateProductAPIView.as_view(), name='add_product'),
-    path('detail/<pk>/', views.ProductDetail.as_view(), name='product_detail'),
-    path('edit/<pk>/', views.UpdateProductAPIView.as_view(), name='product_edit'),
-    path('delete/<pk>/', views.ProductDelete.as_view(), name='product_delete'),
+    path('', views.index, name="index"),
+    path('admin/', admin.site.urls),
+    path('templates/', include(("apps.templates.urls", 'templates'), namespace='templates')),
+    path('product/', include(("apps.products.urls", 'product'), namespace='product')),
+    path('cart/', include(('apps.cart.urls', 'cart'), namespace='cart')),
+    path('user/', include(('apps.user.urls', 'user'), namespace='user')),
 ]

@@ -2,8 +2,8 @@
 {% include "navigation.html" %}
 
 {% if user.is_superuser%}
-<a href="{% url 'main:product_edit' pk=product.id %}"><span>Edit</span></a>
-<a href="{% url 'main:product_delete' pk=product.id %}"><span>Delete</span></a>
+<a href="{% url 'templates:update_product' pk=product.id %}"><span>Edit</span></a>
+<a href="{% url 'templates:delete_product' pk=product.id %}"><span>Delete</span></a>
 {% endif %}
 
 <p>Detail info:</p>

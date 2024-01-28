@@ -16,7 +16,7 @@
 </ul>
 {% endif %}
 
-<form action="{% url 'main:product_list'%}" method='get'>
+<form action="{% url 'templates:product_list'%}" method='get'>
 <label for="category">Choose a category:</label>
 <select name="category_id" id="category_id">
     {% for category in categories %}
@@ -25,7 +25,7 @@
     <input type="submit" name="featured" value="Filter"/>
 </select>
 </form> 
-<a href="{% url 'main:product_list'%}"><button>Clear filter</button></a>
+<a href="{% url 'templates:product_list'%}"><button>Clear filter</button></a>
 
 <table>
     <tr>
@@ -41,7 +41,7 @@
         <th style="width:15%">Add to cart</th>
         {% endif %}
     </tr>
-    {% for product in products_data %}
+    {% for product in products %}
         <tr>
             <td>{{ product.id }}</td>
             <td>{{ product.name }}</td>
@@ -50,7 +50,7 @@
             <td>{{ product.brand }}</td>
             <td>{{ product.category.name }}</td>
             <td><a href="{{ product.link }}" target=”_blank”>{{ product.link }}</a></td>
-            <td><a href="{% url 'main:product_detail' product.id %}" target=”_blank”>Details page</a></td>
+            <td><a href="{% url 'templates:product_detail' product.id %}" target=”_blank”>Details page</a></td>
             {% if user.is_authenticated%}
             <td><a href="{% url 'cart:cart_add' product.id%}">Add to cart</a></td>
             {% endif %}

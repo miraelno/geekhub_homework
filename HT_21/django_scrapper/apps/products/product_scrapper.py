@@ -3,9 +3,10 @@ django.setup()
 
 from urllib.parse import urljoin
 
-from apps.main.models import Product, Category
-from fake_useragent import UserAgent
 import requests
+from fake_useragent import UserAgent
+
+from apps.products.models import Product, Category
 
 
 def start_scrapping(product_id):
@@ -15,16 +16,16 @@ def start_scrapping(product_id):
     base_url = f"https://www.sears.com/api/sal/v3/products/details/{product_id}" 
 
     r = requests.get(url=base_url, headers=headers, params=params)
-    
+
     try:
         response_json = r.json()
         product_info_dict = response_json['productDetail']['softhardProductdetails'][0]
     except Exception:
         raise Exception 
-    
+
     category_name = product_info_dict['hierarchies']['specificHierarchy'][-1:][0]['name']
     category = get_or_create_category(category_name)[0]
-    
+
     result_dict = {
         "id": product_id,
         "name": product_info_dict['descriptionName'],
@@ -42,9 +43,11 @@ def save_scrapped_data(product_id):
     data = start_scrapping(product_id)
     Product.objects.update_or_create(id=product_id, defaults={**data})
 
+
 def get_or_create_category(category_name):
     return Category.objects.get_or_create(name=category_name)
-    
+
+
 if __name__ == '__main__':
     import django
     django.setup()

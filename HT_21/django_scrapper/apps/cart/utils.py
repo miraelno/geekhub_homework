@@ -1,7 +1,5 @@
-def get_or_create_session_cart(request):
-    return request.session.get("shopping_cart", [])
+from collections import defaultdict
 
-def get_product_from_cart(cart, product_id):
-    for product in cart:
-        if product.get(product_id):
-            return product
+
+def get_or_create_session_cart(request):
+    return request.session.get("shopping_cart", defaultdict(dict))

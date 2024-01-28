@@ -1,69 +1,63 @@
-from django.shortcuts import render, redirect
-from .utils import get_or_create_session_cart
-from .utils import get_product_from_cart
-from apps.main.models import Product
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from rest_framework.generics import ListAPIView
+
+from apps.cart.utils import get_or_create_session_cart
+from apps.products.models import Product
 
 
-@login_required(login_url='/user/login/')
-def cart_details(request):
-    cart = get_or_create_session_cart(request)
-    return render(request, "cart/cart.html", context={"cart": cart})
+class BaseCartAPIView(ListAPIView):
+    queryset = Product.objects.all()
+
+    def get_object(self):
+        return self.queryset.get(id=self.kwargs.get("product_id"))
+
+    def get_serializer_class(self):
+        return None
 
 
-def cart_add(request, product_id):
-    product = Product.objects.get(id=product_id)
-    cart = get_or_create_session_cart(request)
-    
-    for item in cart:
-        if item.get(product_id):
-            return cart_increase_qty(request, product_id)
+class CartCreateAPIView(BaseCartAPIView):
+    def list(self, request, *args, **kwargs):
+        product = self.get_object()
+        cart = get_or_create_session_cart(request)
 
-    cart.append(
-        {product_id: {"name": product.name, "quantity": 1, "price": str(product.price)}}
-    )
-    request.session["shopping_cart"] = cart
+        if cart.get(product.id):
+            cart[product.id]["quantity"] += 1
+        else:
+            cart[product.id] = {"name": product.name, "quantity": 1, "price": str(product.price)}
 
-    return redirect("main:product_list")
+        request.session["shopping_cart"] = cart
+        return redirect("templates:cart_list")
 
 
-def cart_decrease_qty(request, product_id):
-    cart = get_or_create_session_cart(request)
+class CartDeleteAPIView(BaseCartAPIView):
+    def list(self, request, *args, **kwargs):
+        product = self.get_object()
+        cart = get_or_create_session_cart(request)
 
-    product = get_product_from_cart(cart, product_id)
-    
-    if product[product_id]["quantity"] <= 1:
-        return cart_delete(request, product_id)
+        cart.pop(product.id, None)
 
-    product[product_id]["quantity"] -= 1
-
-    request.session["shopping_cart"] = cart
-
-    return redirect("cart:cart_details")
+        request.session["shopping_cart"] = cart
+        return redirect("templates:cart_list")
 
 
-def cart_increase_qty(request, product_id):
-    cart = get_or_create_session_cart(request)
-
-    product = get_product_from_cart(cart, product_id)
-
-    product[product_id]["quantity"] += 1
-
-    request.session["shopping_cart"] = cart
-
-    return redirect("cart:cart_details")
+class CartClearAPIView(BaseCartAPIView):
+    def list(self, request, *args, **kwargs):
+        request.session["shopping_cart"] = {}
+        return redirect("templates:cart_list")
 
 
-def cart_delete(request, product_id):
-    cart = get_or_create_session_cart(request)
-    cart_filtered = [item for item in cart if list(item.keys())[0] != product_id]
+class CartQuantityAPIView(BaseCartAPIView):
+    def list(self, request, *args, **kwargs):
+        product = self.get_object()
+        cart = get_or_create_session_cart(request)
+        decrease = self.kwargs.get("action") == "decrease"
 
-    request.session["shopping_cart"] = cart_filtered
+        if decrease:
+            if cart[product.id]["quantity"] <= 1:
+                cart.pop(product.id, None)
 
-    return redirect("cart:cart_details")
+        if cart.get(product.id):
+            cart[product.id]["quantity"] -= (1 if decrease else -1)
 
-
-def cart_clear(request):
-    request.session["shopping_cart"] = []
-
-    return redirect("cart:cart_details")
+        request.session["shopping_cart"] = cart
+        return redirect("templates:cart_list")

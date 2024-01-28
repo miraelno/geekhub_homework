@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 
-from .forms import LoginUserForm
+from apps.user.forms import LoginUserForm
 
 
 def login_view(request):
@@ -15,7 +15,7 @@ def login_view(request):
             )
             if user and user.is_active:
                 login(request, user)
-                return redirect("main:product_list")
+                return redirect("templates:product_list")
             else:
                 messages.add_message(request, messages.ERROR, "No such user.")
     else:
@@ -25,4 +25,4 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect("main:product_list")
+    return redirect("templates:product_list")

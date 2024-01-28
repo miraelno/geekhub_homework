@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(max_length=500)),
                 ('brand', models.CharField(max_length=50)),
                 ('link', models.CharField(max_length=50)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='main.category')),
+                ('category', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='products.category')),
             ],
         ),
     ]
