@@ -10,7 +10,7 @@ from apps.templates.forms import ProductsAddForm
 from apps.templates.mixins import AuthenticatedMixin
 
 
-@login_required(login_url='/user/login/')
+@login_required(login_url="/user/login/")
 def cart_list(request):
     cart = get_or_create_session_cart(request)
     return render(request, "cart/cart.html", context={"cart": cart})
@@ -18,7 +18,7 @@ def cart_list(request):
 
 def product_list(request):
     params = request.GET
-    category_id = request.GET.get('category_id')
+    category_id = request.GET.get("category_id")
     product_queryset = Product.objects.all()
 
     if category_id:
@@ -38,7 +38,9 @@ def product_list(request):
 @login_required(login_url="/user/login/")
 def add_product(request):
     if not request.user.is_superuser:
-        messages.add_message(request, messages.ERROR, "You have no permissions for this action.")
+        messages.add_message(
+            request, messages.ERROR, "You have no permissions for this action."
+        )
         return redirect("templates:product_list")
 
     form = ProductsAddForm()
@@ -57,16 +59,16 @@ def product_detail(request, pk):
 
 class ProductEdit(AuthenticatedMixin, UpdateView):
     model = Product
-    fields = ['name', 'price', 'description', 'brand', 'link', 'category']
+    fields = ["name", "price", "description", "brand", "link", "category"]
     template_name = "product/product_edit.html"
 
     def get_success_url(self):
-        return reverse('templates:product_list')
+        return reverse("templates:product_list")
 
 
 class ProductDelete(AuthenticatedMixin, DeleteView):
     model = Product
     template_name = "product/product_delete.html"
-    
+
     def get_success_url(self):
-        return reverse('templates:product_list')
+        return reverse("templates:product_list")

@@ -23,7 +23,11 @@ class CartCreateAPIView(BaseCartAPIView):
         if cart.get(product.id):
             cart[product.id]["quantity"] += 1
         else:
-            cart[product.id] = {"name": product.name, "quantity": 1, "price": str(product.price)}
+            cart[product.id] = {
+                "name": product.name,
+                "quantity": 1,
+                "price": str(product.price),
+            }
 
         request.session["shopping_cart"] = cart
         return redirect("templates:cart_list")
@@ -57,7 +61,7 @@ class CartQuantityAPIView(BaseCartAPIView):
                 cart.pop(product.id, None)
 
         if cart.get(product.id):
-            cart[product.id]["quantity"] -= (1 if decrease else -1)
+            cart[product.id]["quantity"] -= 1 if decrease else -1
 
         request.session["shopping_cart"] = cart
         return redirect("templates:cart_list")

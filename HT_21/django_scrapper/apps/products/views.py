@@ -27,7 +27,7 @@ class ProductUpdateView(mixins.UpdateModelMixin, GenericAPIView):
     serializer_class = ProductUpdateSerializer
 
     def get_object(self):
-        return self.queryset.get(pk=self.request.data['id'])
+        return self.queryset.get(pk=self.request.data["id"])
 
     def post(self, request, *args, **kwargs):
         self.update(request, *args, **kwargs)
@@ -38,7 +38,7 @@ class ProductDeleteView(mixins.DestroyModelMixin, GenericAPIView):
     queryset = Product.objects.all()
 
     def get_object(self):
-        return self.queryset.get(pk=self.request.data['id'])
+        return self.queryset.get(pk=self.request.data["id"])
 
     def post(self, request, *args, **kwargs):
         self.destroy(request, *args, **kwargs)

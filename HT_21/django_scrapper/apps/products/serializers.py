@@ -10,14 +10,14 @@ from apps.products.product_scrapper import save_scrapped_data
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['name']
+        fields = ["name"]
 
 
 class ProductUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'name', 'price', 'description', 'brand', 'link']
-        read_only_fields = ['id']
+        fields = ["id", "name", "price", "description", "brand", "link"]
+        read_only_fields = ["id"]
 
 
 class AddProductSerializer(serializers.Serializer):
@@ -25,7 +25,7 @@ class AddProductSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         attrs = super().validate(attrs)
-        attrs['product_ids'] = attrs['product_ids'].split(' ')
+        attrs["product_ids"] = attrs["product_ids"].split(" ")
         return attrs
 
     def create(self, validated_data):
