@@ -1,15 +1,15 @@
 {% block content %}
-<a href="http://127.0.0.1:8001/templates/product-list/">Products List</a><br>
+<a href="http://127.0.0.1:8000/templates/product-list/">Products List</a><br>
 {% if user.is_superuser%}
-<a href="http://127.0.0.1:8001/templates/add-product/">Add new products</a><br>
+<a href="http://127.0.0.1:8000/templates/add-product/">Add new products</a><br>
 {% endif %}
-<a href="http://127.0.0.1:8001/templates/cart-list/">Cart</a><br>
+<a href="http://127.0.0.1:8000/templates/cart-list/">Cart</a><br>
 
 {% if user.is_authenticated%}
 <p>{{user.username}}</p>
-<a href="http://127.0.0.1:8001/user/logout">Logout</a><br>
+<a href="http://127.0.0.1:8000/user/logout">Logout</a><br>
 {% else %}
-<a href="http://127.0.0.1:8001/user/login">Login</a><br>
+<a href="http://127.0.0.1:8000/user/login">Login</a><br>
 {% endif %}
 
 <br>
