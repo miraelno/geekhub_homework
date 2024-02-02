@@ -1,0 +1,41 @@
+<style>
+    table, th, td {
+        border: 1px solid black;
+        text-align: center;
+    }
+</style>
+{% extends 'base.html' %} {% block content %}
+{% include "navigation.html" %}
+<div id='cart_block'>
+    {%if cart %}
+        <table id='cart_table'>
+            <button type="submit" class="button" id="clear_cart">Clear cart</button>
+            <tr>
+                <th style="width:25%">ID</th>
+                <th style="width:25%">Name</th>
+                <th style="width:25%">Price</th>
+                <th style="width:25%">Quantity</th>
+            </tr>
+            {% for key, value in cart.items %}
+                <tr>
+                    <td id="item_id"> {{ key }}</td>
+                    <td>{{ value.name }}</td>
+                    <td>{{ value.price }}</td>
+                    <td>
+                        <p>{{ value.quantity }}</p>
+                        <div class='qty_buttons'>
+                            <button type="submit" class="button" id="item_increase" value={{key}}>+</button>
+                            <button type="submit" class="button" id="item_decrease" value={{key}}>-</button>
+                        </div>
+                        <div class='qty_buttons'>
+                            <button type="submit" id="item_delete" value={{key}}>Delete item</button>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        Cart is empty
+    {% endif %}
+</div>
+{% endblock %}

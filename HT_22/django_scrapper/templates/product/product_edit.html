@@ -1,0 +1,9 @@
+{% extends 'base.html' %} {% block content %}
+{% include "navigation.html" %}
+
+<form method="post" action="/product/update/">{% csrf_token %}
+    <input type="hidden" name="id" value="{{ product.id }}">
+    {{ form.as_p }}
+    <input type="submit" value="Update">
+</form>
+{% endblock %}
