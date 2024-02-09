@@ -1,3 +1,5 @@
+const base_url = new URL('http://127.0.0.1:8000')
+
 const clearCartButton = document.querySelector('#clear_cart');
 const itemIncreaseButtonsList = document.querySelectorAll('#item_increase');
 const itemDecreaseButtonsList = document.querySelectorAll('#item_decrease');
@@ -8,7 +10,7 @@ const cartBody = document.querySelector('#cart_block');
 $(function () {
   $(clearCartButton).click(() => {
     $.ajax({
-      url: 'http://127.0.0.1:8000/cart/cart_clear/',
+      url: new URL('cart/cart_clear/', base_url),
       type: 'get',
       dataType: 'html',
       success: (data) => {
@@ -21,7 +23,7 @@ $(function () {
     element.addEventListener('click', () => {
       const product_id = element.value;
       $.ajax({
-        url: `http://127.0.0.1:8000/cart/cart_add/${product_id}/`,
+        url: new URL(`cart/cart_add/${product_id}`, base_url),
         type: 'get',
         success: (data) => {
           location.reload();
@@ -34,7 +36,7 @@ $(function () {
     element.addEventListener('click', () => {
       const product_id = element.value;
       $.ajax({
-        url: `http://127.0.0.1:8000/cart/cart_qty/${product_id}/increase`,
+        url: new URL(`/cart/cart_qty/${product_id}/increase`, base_url),
         type: 'get',
         dataType: 'html',
         success: (data) => {
@@ -48,7 +50,7 @@ $(function () {
     element.addEventListener('click', () => {
       const product_id = element.value;
       $.ajax({
-        url: `http://127.0.0.1:8000/cart/cart_qty/${product_id}/decrease`,
+        url: new URL(`cart/cart_qty/${product_id}/decrease`, base_url),
         type: 'get',
         success: (data) => {
           location.reload();
@@ -61,7 +63,7 @@ $(function () {
     element.addEventListener('click', () => {
       const product_id = element.value;
       $.ajax({
-        url: `http://127.0.0.1:8000/cart/cart_delete/${product_id}/`,
+        url: new URL(`cart/cart_delete/${product_id}/`, base_url),
         type: 'get',
         success: (data) => {
           location.reload();
