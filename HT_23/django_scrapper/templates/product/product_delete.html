@@ -1,0 +1,10 @@
+{% extends 'base.html' %} {% block content %}
+{% include "navigation.html" %}
+
+<form method="post" action="/product/delete/">{% csrf_token %}
+    <p>Are you sure you want to delete "{{ object }}"?</p>
+    <input type="hidden" name="id" value="{{ object.id }}">
+    {{ form }}
+    <input type="submit" value="Confirm">
+</form>
+{% endblock %}
