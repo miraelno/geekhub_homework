@@ -1,0 +1,60 @@
+<style>
+    table, th, td {
+        border: 1px solid black;
+        text-align: center;
+    }
+</style>
+
+{% extends 'base.html' %} {% block content %}
+{% include "navigation.html" %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<form action="{% url 'templates:product_list'%}" method='get'>
+<label for="category">Choose a category:</label>
+<select name="category_id" id="category_id">
+    {% for category in categories %}
+        <option value={{category.id}}><a href='#'>{{category.name}}</a></option>
+    {% endfor %}
+    <input type="submit" name="featured" value="Filter"/>
+</select>
+</form> 
+<a href="{% url 'templates:product_list'%}"><button>Clear filter</button></a>
+
+<table class="products_table">
+    <tr>
+      <th style="width:7%">ID</th>
+      <th style="width:20%">Name</th>
+      <th style="width:5%">Price</th>
+      <th style="width:30%">Description</th>
+      <th style="width:5%">Brand</th>
+      <th style="width:5%">Category</th>
+      <th style="width:15%">Link</th>
+      <th style="width:8%">Details</th>
+      {% if user.is_authenticated%}
+        <th style="width:15%">Add to cart</th>
+        {% endif %}
+    </tr>
+    {% for product in products %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.brand }}</td>
+            <td>{{ product.category.name }}</td>
+            <td><a href="{{ product.link }}" target=”_blank”>{{ product.link }}</a></td>
+            <td><a href="{% url 'templates:product_detail' product.id %}" target=”_blank”>Details page</a></td>
+            {% if user.is_authenticated%}
+            <td><button value={{product.id}} id="add_item">Add to cart</td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
